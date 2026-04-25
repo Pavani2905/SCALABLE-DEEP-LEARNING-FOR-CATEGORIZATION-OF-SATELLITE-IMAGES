@@ -1,0 +1,51 @@
+{%extends 'users/userbase.html'%}
+{%block contents%}
+
+
+<!-- ml.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Learning Results</title>
+    <!-- Bootstrap CSS link -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS styles for visualization -->
+    <style>
+        .result-section {
+            margin-top: 20px;
+        }
+        .confusion-matrix-img {
+            max-width: 600px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deep Learning Results</h1>
+        
+        <!-- Display accuracy -->
+        <div class="result-section">
+            <h3>Accuracy:</h3>
+            <p>{{ accuracy }}</p>
+        </div>
+        
+        <!-- Display classification report -->
+        <div class="result-section">
+            <h3>Classification Report:</h3>
+            <pre>{{ classification_report }}</pre>
+        </div>
+        
+        <!-- Display confusion matrix image -->
+        <div class="result-section">
+            <h3>Confusion Matrix:</h3>
+            <img src="{{ confusion_matrix_image }}" class="confusion-matrix-img" alt="Confusion Matrix">
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+{%endblock%}
