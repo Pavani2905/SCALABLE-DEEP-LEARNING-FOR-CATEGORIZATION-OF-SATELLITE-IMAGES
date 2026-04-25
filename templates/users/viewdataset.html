@@ -1,0 +1,38 @@
+{% extends 'users/userbase.html' %}
+{% block contents %}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('table').DataTable({
+            "pageLength": 50
+        });
+    });
+</script>
+
+<style>
+    /* Centering and background color for the dataset */
+    .dataset-container {
+        margin: 10px auto; /* Center horizontally */
+        max-width: 80%; /* Adjust maximum width */
+        background-color: #f5f5f5; /* Set background color */
+        padding: 20px; /* Add padding for spacing */
+    }
+    
+    /* Centering the section-header */
+    .section-header {
+        text-align: center;
+    }
+</style>
+
+<div class="section-header">
+    <h2 class="section-title wow fadeInDown"> Dataset view :</h2>
+    <p class="wow fadeInDown"></p>
+</div>
+
+<div class="dataset-container">
+    <pre>{{ data|safe }}</pre>
+</div>
+
+{% endblock %}
