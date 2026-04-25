@@ -1,0 +1,102 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block contents %}
+<div class="min-h-screen bg-gray-100 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-xl rounded-lg">
+            <!-- Header -->
+            <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                <h3 class="text-2xl font-bold leading-6 text-gray-900">Satellite Image Classification Results</h3>
+            </div>
+
+            <!-- Image and Prediction -->
+            <div class="px-4 py-5 sm:p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Image Display -->
+                    <div class="space-y-4">
+                        <h4 class="text-lg font-medium text-gray-900">Uploaded Image</h4>
+                        <div class="relative h-64 bg-gray-100 rounded-lg overflow-hidden">
+                            <img src="{{ predicted_image }}" alt="Uploaded satellite image" class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Prediction Results -->
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-900">Classification Result</h4>
+                            <div class="mt-2 p-4 bg-green-50 rounded-lg">
+                                <p class="text-xl font-semibold text-green-800">{{ predicted_label }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Confidence Scores -->
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-900">Confidence Scores</h4>
+                            <div class="mt-2 space-y-3">
+                                {% for category, score in confidence_scores.items %}
+                                <div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="text-gray-600">{{ category }}</span>
+                                        <span class="font-medium">{{ score|floatformat:2 }}%</span>
+                                    </div>
+                                    <div class="mt-1 relative">
+                                        <div class="overflow-hidden h-2 text-xs flex rounded bg-gray-200">
+                                            <div style="width: {{ score }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center {% if category == predicted_label %}bg-green-500{% else %}bg-blue-500{% endif %}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Information -->
+                <div class="mt-8 border-t border-gray-200 pt-6">
+                    <h4 class="text-lg font-medium text-gray-900">Model Information</h4>
+                    <dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <div class="bg-gray-50 px-4 py-5 rounded-lg">
+                            <dt class="text-sm font-medium text-gray-500">Input Shape</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ model_info.input_shape.1 }}x{{ model_info.input_shape.2 }}x{{ model_info.input_shape.3 }}</dd>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-5 rounded-lg">
+                            <dt class="text-sm font-medium text-gray-500">Number of Layers</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ model_info.num_layers|intcomma }}</dd>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-5 rounded-lg">
+                            <dt class="text-sm font-medium text-gray-500">Total Parameters</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ model_info.total_params|intcomma }}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- Preprocessing Steps -->
+                <div class="mt-8 border-t border-gray-200 pt-6">
+                    <h4 class="text-lg font-medium text-gray-900">Preprocessing Steps</h4>
+                    <ul class="mt-4 space-y-2">
+                        {% for step in preprocessing_steps %}
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-sm text-gray-600">{{ step }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Back Button -->
+                <div class="mt-8 border-t border-gray-200 pt-6">
+                    <div class="flex justify-center">
+                        <a href="{% url 'predictTrustWorthy' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Classify Another Image
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
